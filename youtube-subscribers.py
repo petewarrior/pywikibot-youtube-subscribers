@@ -49,7 +49,7 @@ def main() :
       text = re.sub(r'(\{\{Infobox YouTube personality.*?channel_url.*?\=.*?'+ id + r'.*?views.*?\=.*?)([\w\s\.\,]+)', r"\1 " + views, text, flags=re.DOTALL)
 
       # stats_update
-      text = re.sub(r'(\{\{Infobox YouTube personality.*?channel_url.*?\=.*?' + id + r'.*?stats_update.*?\=.*?)([\w\{\}\|\-]+)', r"\1 " + datetime.datetime.now().strftime("{{date|%Y-%m-%d}}"), text, flags=re.DOTALL)
+      text = re.sub(r'(\{\{Infobox YouTube personality.*?channel_url.*?\=.*?' + id + r'.*?stats_update.*?\=.*?)({{date\|[\d-]+}})', r"\1" + datetime.datetime.now().strftime("{{date|%Y-%m-%d}}"), text, flags=re.DOTALL)
 
       page.text = text
 
