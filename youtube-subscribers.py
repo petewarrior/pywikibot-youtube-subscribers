@@ -32,7 +32,7 @@ def main() :
 
     stats = get_statistics(ids= channel_ids)
 
-    for s in stats:
+  for s in stats:
       id = s["id"]
       viewsInt = int(s["statistics"]["viewCount"])
       views =  "{:,}".format(viewsInt)
@@ -40,16 +40,16 @@ def main() :
       subscribersInt = int(s["statistics"]["subscriberCount"])
       subscribers = ('~' if subscribersInt > 100000 else '') + "{:,}".format(subscribersInt)
 
-      subcomp = re.compile(r'(\{\{Infobox YouTube personality.*?channel_url.*?\=.*?'+ id +r'.*?subscribers.*?\=.*?)([\w\s\~\.\,]+)', flags=re.DOTALL)
+      subcomp = re.compile(r'(\{\{Infobox YouTube personality.*?channel_url.*?\=.*?'+ id +r'.*?subscribers.*?\=.*?)([\w\s\~\.\,]+)[\n\s]*', flags=re.DOTALL)
 
       # subscribers
-      text = subcomp.sub(r'\1 ' + subscribers, text)
+      text = subcomp.sub(r'\1 ' + subscribers + r"\n", text)
 
       # views
-      text = re.sub(r'(\{\{Infobox YouTube personality.*?channel_url.*?\=.*?'+ id + r'.*?views.*?\=.*?)([\w\s\.\,]+)', r"\1 " + views, text, flags=re.DOTALL)
+      text = re.sub(r'(\{\{Infobox YouTube personality.*?channel_url.*?\=.*?'+ id + r'.*?views.*?\=.*?)([\w\s\.\,]+)[\n\s]*', r"\1 " + views + r"\n", text, flags=re.DOTALL)
 
       # stats_update
-      text = re.sub(r'(\{\{Infobox YouTube personality.*?channel_url.*?\=.*?' + id + r'.*?stats_update.*?\=.*?)({{date\|[\d-]+}})', r"\1" + datetime.datetime.now().strftime("{{date|%Y-%m-%d}}"), text, flags=re.DOTALL)
+      text = re.sub(r'(\{\{Infobox YouTube personality.*?channel_url.*?\=.*?' + id + r'.*?stats_update.*?\=.*?)({{date\|[\d-]+}})[\n\s]*', r"\1" + datetime.datetime.now().strftime("{{date|%Y-%m-%d}}") + r"\n", text, flags=re.DOTALL)
 
       page.text = text
 
