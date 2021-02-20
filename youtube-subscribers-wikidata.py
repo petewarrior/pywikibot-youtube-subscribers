@@ -22,7 +22,7 @@ def get_statistics(channels=list):
 
     if len(ids) > 0:
         params = {'part': 'statistics,status', 'id': idlist,
-                  'key': "AIzaSyDycbF_cH0Vxz3GMqyRb5FQXi_XTGrELgw"}
+                  'key': "youtube_api_key"}
         r = requests.get(
             "https://youtube.googleapis.com/youtube/v3/channels", params)
 
