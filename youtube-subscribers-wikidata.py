@@ -114,7 +114,7 @@ def main():
             record.setTarget(subsCount)
             record.addQualifier(channelIdClaim, summary=u'Set Channel ID')
             record.addQualifier(newPit, summary=u'Set point in time')
-            record.setRank(u'preferred')
+            # record.setRank(u'preferred') TODO remove existing preferred value first
             item.addClaim(record, summary=u'Adding stats as new social media followers')
 
 if __name__ == "__main__":
