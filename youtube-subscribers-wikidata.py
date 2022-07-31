@@ -66,8 +66,6 @@ def main():
             videos = claim.qualifiers['P3740'][0] if 'P3740' in claim.qualifiers else None
             channel = claim.target
 
-            record = dictionary['claims']['P8687'] if u'P8687' in dictionary['claims'] else pywikibot.Claim(repo, u'P8687')
-            
             channels = [{'channel_url': channel}]
 
             stats = get_statistics(channels=channels)
@@ -110,11 +108,21 @@ def main():
             newPit.setTarget(piTime)
 
             print('Add stats record')
+            oldstats = dictionary['claims']['P8687']
+
+            for r in oldstats:
+                if u'P2397' in r.qualifiers:
+                    val = r.qualifiers['P2397'][0].getTarget()
+                    if val == channel_id and r.getRank() == 'preferred':
+                        item.removeClaims(r)
+                        r.setRank(u'normal')
+                        item.addClaim(r, u'Set old stats to normal')
+            
             record = pywikibot.Claim(repo, u'P8687')
             record.setTarget(subsCount)
             record.addQualifier(channelIdClaim, summary=u'Set Channel ID')
             record.addQualifier(newPit, summary=u'Set point in time')
-            # record.setRank(u'preferred') TODO remove existing preferred value first
+            record.setRank(u'preferred')
             item.addClaim(record, summary=u'Adding stats as new social media followers')
 
 if __name__ == "__main__":
