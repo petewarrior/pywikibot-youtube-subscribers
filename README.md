@@ -9,7 +9,7 @@ Basically, this script does three things:
 Requires [Pywikibot](https://www.mediawiki.org/wiki/Manual:Pywikibot), Python 3, and a [YouTube API key](https://developers.google.com/youtube/v3/getting-started).
 
 ## Displaying stats on Wikipedia page
-Replace the `subscribers`, `views`, and `stats_update` fields in the Youtube personality infobox as follows. If there are more than one channel, the stats will be displayed as a list.
+Replace the `subscribers`, `views`, and `stats_update` fields in the Youtube personality infobox as follows. If there are more than one channel, the stats will be displayed as a list. Remove the `list` parameter if there's only one YouTube channel.
 ```
 | subscribers = {{#invoke:WikidataIB|getValue|P2397|qo=yes|qual=P3744|list=ubl|fetchwikidata=ALL|onlysourced=no|scale=a|noicon=yes}}
 | views = {{#invoke:WikidataIB|getValue|P2397|qo=yes|qual=P5436|list=ubl|fetchwikidata=ALL|onlysourced=no|scale=a|noicon=yes}}

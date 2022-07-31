@@ -54,21 +54,25 @@ def main():
         dictionary = item.get()
 
         if dictionary['claims']['P2397'] is None : continue        
-
+        print(dictionary['labels']['en'])
+        
         for c in range(len(dictionary['claims']['P2397'])):
             claim = dictionary['claims']['P2397'][c]
-
+            channel_id = claim.getTarget()
+            
             subscribers = claim.qualifiers['P3744'][0] if 'P3744' in claim.qualifiers else None
             views = claim.qualifiers['P5436'][0] if 'P5436' in claim.qualifiers else None
             pit = claim.qualifiers['P585'][0] if 'P585' in claim.qualifiers else None
             videos = claim.qualifiers['P3740'][0] if 'P3740' in claim.qualifiers else None
             channel = claim.target
 
+            record = dictionary['claims']['P8687'] if u'P8687' in dictionary['claims'] else pywikibot.Claim(repo, u'P8687')
+            
             channels = [{'channel_url': channel}]
 
             stats = get_statistics(channels=channels)
-            
-            for s in stats:
+
+            for s in stats: # always one for now
 
                 viewsInt = s["statistics"]["viewCount"]
                 subscribersInt = s["statistics"]["subscriberCount"]
@@ -87,15 +91,31 @@ def main():
                 piTime = pywikibot.WbTime(int(currTime.strftime('%Y')), int(currTime.strftime('%m')), int(currTime.strftime('%d')))
                 newPit = pywikibot.Claim(repo, u'P585') # point in time
                 newPit.setTarget(piTime)
-            
+                
+            print('Removing old qualifiers')
             if subscribers: claim.removeQualifier(subscribers)
             if views: claim.removeQualifier(views)
             if pit: claim.removeQualifier(pit)
             if videos: claim.removeQualifier(videos)
+            print('Adding updated qualifiers')
             claim.addQualifier(newSubscribers, summary=u'Update subscriber count')
             claim.addQualifier(newViews, summary=u'Update view count')
-            claim.addQualifier(newVideos, summary=u'update videos count')
-            claim.addQualifier(newPit, summary=u'update point in time')
+            claim.addQualifier(newVideos, summary=u'Update videos count')
+            claim.addQualifier(newPit, summary=u'Update point in time')
+
+            # can't use a claim twice, recreate with same value
+            channelIdClaim = pywikibot.Claim(repo, u'P2397') # Channel ID
+            channelIdClaim.setTarget(channel_id)
+            newPit = pywikibot.Claim(repo, u'P585') # point in time
+            newPit.setTarget(piTime)
+
+            print('Add stats record')
+            record = pywikibot.Claim(repo, u'P8687')
+            record.setTarget(subsCount)
+            record.addQualifier(channelIdClaim, summary=u'Set Channel ID')
+            record.addQualifier(newPit, summary=u'Set point in time')
+            record.setRank(u'preferred')
+            item.addClaim(record, summary=u'Adding stats as new social media followers')
 
 if __name__ == "__main__":
     main()
