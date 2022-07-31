@@ -1,5 +1,5 @@
 # pywikibot-youtube-subscribers
-A simple script to update YouTube channel stats in a Wikidata page. Inspired by Borkbot. 
+A simple script to update YouTube channel stats in a Wikidata page. Like BorkedBot, but simpler. 
 
 Basically, this script does three things:
 1. Get all YouTube channel ID (P2397) values in a Wikidata page
