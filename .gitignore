@@ -1,0 +1,8 @@
+apicache-py3/
+env/
+families/
+logs/
+.env
+pywikibot.lwp
+throttle.ctrl
+user-config.py
