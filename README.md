@@ -13,5 +13,5 @@ Replace the `subscribers`, `views`, and `stats_update` fields in the Youtube per
 ```
 | subscribers = {{#invoke:WikidataIB|getValue|P2397|qo=yes|qual=P3744|list=ubl|fetchwikidata=ALL|onlysourced=no|scale=a|noicon=yes}}
 | views = {{#invoke:WikidataIB|getValue|P2397|qo=yes|qual=P5436|list=ubl|fetchwikidata=ALL|onlysourced=no|scale=a|noicon=yes}}
-| stats_update = {{#invoke:WikidataIB|getValue|P2397|qo=yes|qual=P585|maxvals=1|list=ubl|fetchwikidata=ALL|onlysourced=no|noicon=no}}
+| stats_update = {{#invoke:WikidataIB|getValue|P2397|qo=yes|qual=P585|maxvals=1|fetchwikidata=ALL|onlysourced=no|noicon=no}}
 ```
