@@ -59,6 +59,13 @@ def main():
         for c in range(len(dictionary['claims']['P2397'])):
             claim = dictionary['claims']['P2397'][c]
             channel_id = claim.getTarget()
+            if u'P3744' in claim.qualifiers :
+                print(claim.qualifiers['P1810'][0].getTarget())
+            else :
+                print(channel_id)
+            if claim.getRank() == 'deprecated' :
+                print('Skipping deprecated entry')
+                continue
             
             subscribers = claim.qualifiers['P3744'][0] if 'P3744' in claim.qualifiers else None
             views = claim.qualifiers['P5436'][0] if 'P5436' in claim.qualifiers else None
@@ -91,10 +98,12 @@ def main():
                 newPit.setTarget(piTime)
                 
             print('Removing old qualifiers')
-            if subscribers: claim.removeQualifier(subscribers)
-            if views: claim.removeQualifier(views)
-            if pit: claim.removeQualifier(pit)
-            if videos: claim.removeQualifier(videos)
+            qualifiersToRemove = []
+            if(subscribers) : qualifiersToRemove.append(subscribers)
+            if(views) : qualifiersToRemove.append(views)
+            if(pit) : qualifiersToRemove.append(pit)
+            if(videos) : qualifiersToRemove.append(videos)
+            claim.removeQualifiers(qualifiersToRemove, summary=u"Remove old qualifiers")
             print('Adding updated qualifiers')
             claim.addQualifier(newSubscribers, summary=u'Update subscriber count')
             claim.addQualifier(newViews, summary=u'Update view count')
@@ -114,10 +123,8 @@ def main():
                 if u'P2397' in r.qualifiers:
                     val = r.qualifiers['P2397'][0].getTarget()
                     if val == channel_id and r.getRank() == 'preferred':
-                        item.removeClaims(r)
-                        r.setRank(u'normal')
-                        item.addClaim(r, u'Set old stats to normal')
-            
+                        r.changeRank(u'normal')
+                        
             record = pywikibot.Claim(repo, u'P8687')
             record.setTarget(subsCount)
             record.addQualifier(channelIdClaim, summary=u'Set Channel ID')
